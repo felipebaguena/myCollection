@@ -20,6 +20,8 @@ class UserController extends Controller
         // Validate the request data
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
+            'surname' => 'required|string|max:255',
+            'nickname' => 'required|string|max:255|unique:users',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
         ]);
@@ -28,12 +30,14 @@ class UserController extends Controller
             return response()->json(['errors' => $validator->errors()], 400);
         }
 
-        // Create the user with role_id = 2
+        // Create the user with role_code = 'USER' by default
         $user = User::create([
             'name' => $request->name,
+            'surname' => $request->surname,
+            'nickname' => $request->nickname,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'role_id' => 2, // Assign role_id = 2 by default
+            'role_code' => 'USER', // Assign role_code = 'USER' by default
         ]);
 
         return response()->json(['user' => $user], 201);

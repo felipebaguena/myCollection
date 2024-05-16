@@ -15,9 +15,9 @@ return Application::configure(basePath: dirname(__DIR__))
             except: ['stripe/*']
         );
 
-        $middleware->web(append: [
-            \App\Http\Middleware\EnsureUserIsSubscribed::class,
-        ]);
+        // $middleware->web(append: [
+        //     \App\Http\Middleware\EnsureUserIsSubscribed::class,
+        // ]);
 
         $middleware->api(prepend: [
             \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
