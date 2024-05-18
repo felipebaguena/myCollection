@@ -17,6 +17,15 @@ Route::get('/test', function () {
 // Ruta para crear usuarios
 Route::post('/users', [UserController::class, 'createUser']);
 
+// Ruta para actualizar nik y contraseña de usuario (contraseña anterior requerida)
+Route::put('/users/{userId}', [UserController::class, 'updateUser']);
+
+// Ruta ver todos los usuarios
+Route::get('/users', [UserController::class, 'getAllUsers']);
+
+// Ruta para eliminar un usuario
+Route::delete('/users/{userId}', [UserController::class, 'deleteUser']);
+
 // Ruta para obtener roles
 Route::get('/roles', [RoleController::class, 'index']);
 
@@ -38,8 +47,20 @@ Route::post('/games', [GameController::class, 'store']);
 // Ruta para actualizar un juego
 Route::put('/games/{id}', [GameController::class, 'update']);
 
+// Ruta para obtener todos los juegos
+Route::post('/games/filter', [GameController::class, 'getAllGames']);
+
 // Ruta para detalles de juego
 Route::get('/games/{id}', [GameDetailsController::class, 'show']);
 
 // Ruta para eliminar un juego
 Route::delete('/games/{id}', [GameController::class, 'destroy']);
+
+// Ruta para añadir un juego a la librería de un usuario
+Route::post('/users/{userId}/games', [UserController::class, 'addGameToLibrary']);
+
+// Ruta para eliminar un juego de la librería de un usuario
+Route::delete('/users/{userId}/games/{gameId}', [UserController::class, 'removeGameFromLibrary']);
+
+// Ruta para ver la librería de un usuario
+Route::get('/users/{userId}/library', [UserController::class, 'getUserLibrary']);

@@ -88,4 +88,40 @@ class GameController extends Controller
 
         return response()->json(['message' => 'Game deleted successfully.'], 200);
     }
+
+    /**
+     * Get all games with optional filters.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getAllGames(Request $request)
+    {
+        $query = Game::query();
+
+        // Apply filters only if they are present
+        if ($request->filled('title')) {
+            $query->where('title', 'like', '%' . $request->title . '%');
+        }
+
+        if ($request->filled('publisher')) {
+            $query->where('publisher', 'like', '%' . $request->publisher . '%');
+        }
+
+        if ($request->filled('launch_date')) {
+            $query->whereDate('launch_date', $request->launch_date);
+        }
+
+        if ($request->filled('genre')) {
+            $query->where('genre', 'like', '%' . $request->genre . '%');
+        }
+
+        if ($request->filled('platform')) {
+            $query->where('platform', 'like', '%' . $request->platform . '%');
+        }
+
+        $games = $query->get();
+
+        return response()->json(['games' => $games], 200);
+    }
 }
