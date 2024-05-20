@@ -186,4 +186,22 @@ class UserController extends Controller
 
         return response()->json(['message' => 'User deleted successfully.'], 200);
     }
+
+    /**
+     * Get the authenticated user's data.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getAuthenticatedUser(Request $request)
+    {
+        // Obtener el usuario autenticado
+        $user = $request->user();
+
+        if (!$user) {
+            return response()->json(['message' => 'Usuario no autenticado'], 401);
+        }
+
+        return response()->json(['user' => $user], 200);
+    }
 }

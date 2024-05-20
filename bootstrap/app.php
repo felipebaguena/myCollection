@@ -12,12 +12,12 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->validateCsrfTokens(
-            except: ['stripe/*']
+            except: ['stripe/*', '/api/login', '/api/csrf-token'] // Excluir las rutas necesarias de CSRF
         );
 
-        // $middleware->web(append: [
-        //     \App\Http\Middleware\EnsureUserIsSubscribed::class,
-        // ]);
+        $middleware->web(append: [
+            \Fruitcake\Cors\HandleCors::class,
+        ]);
 
         $middleware->api(prepend: [
             \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,

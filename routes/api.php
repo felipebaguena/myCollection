@@ -11,6 +11,10 @@ use App\Http\Controllers\GameController;
 use App\Http\Controllers\GameDetailsController;
 use App\Http\Middleware\VerifyToken;
 
+Route::get('/csrf-token', function () {
+    return response()->json(['csrfToken' => csrf_token()]);
+});
+
 Route::get('/test', function () {
     return response()->json(['message' => '¡Ruta de prueba API funciona correctamente!']);
 });
@@ -23,10 +27,13 @@ Route::post('/login', [AuthController::class, 'login']);
 
 // Agrupamos las rutas que requieren el middleware 'verify.token'
 Route::middleware([VerifyToken::class])->group(function () {
-    // Ruta para actualizar nik y contraseña de usuario (contraseña anterior requerida)
+    // Ruta para obtener los datos del usuario autenticado
+    Route::get('/user', [UserController::class, 'getAuthenticatedUser']);
+    
+    // Ruta para actualizar nick y contraseña de usuario (contraseña anterior requerida)
     Route::put('/users/{userId}', [UserController::class, 'updateUser']);
     
-    // Ruta ver todos los usuarios
+    // Ruta para ver todos los usuarios
     Route::get('/users', [UserController::class, 'getAllUsers']);
     
     // Ruta para eliminar un usuario
